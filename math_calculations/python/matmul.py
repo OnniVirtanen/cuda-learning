@@ -3,6 +3,14 @@ class Matrix:
         self.data = data
         self.rows, self.columns = self.get_dimensions()
 
+    def __repr__(self):
+        return repr(f"[Matrix] rows: {self.rows}, columns: {self.columns}, data: {self.data}")
+
+    def __eq__(self, other):
+        if isinstance(other, Matrix):
+            return self.data == other.data and self.rows == other.rows and self.columns == other.columns
+        return NotImplemented
+
     def get_dimensions(self):
         if not self.data:  # Check if the matrix is empty
             return 0, 0
@@ -15,37 +23,40 @@ class Matrix:
             num_columns = len(self.data)
         
         return num_rows, num_columns
-
-    def __repr__(self):
-        return repr(f"[Matrix] rows: {self.rows}, columns: {self.columns}, data: {self.data}")
-
+    
+    @staticmethod
+    def initialize_matrix(rows: int, columns: int):
+        matrix = []
+        for i in range(rows):
+            row = []
+            for j in range(columns):
+                column = []
+                row.append(column)
+            matrix.append(row)
+        return Matrix(matrix)
+    
+# Iterative matrix multiplication algorithm
 def matmul(a: Matrix, b: Matrix) -> Matrix:
+    assert isinstance(a, Matrix) and isinstance(b, Matrix)
+    if __debug__:
+        print(f"Matrix multiplication \n in a: {a} \n in b: {b}")
     if a.columns != b.rows:
         raise Exception("Columns in first matrix must equal the rows in second matrix")
-    
+
     # Output matrix is product of rows of a and columns of b
-    rows = a.rows
-    columns = b.columns
+    n = a.rows
+    m = a.columns # Same as a.rows
+    p = b.columns
+    C = Matrix.initialize_matrix(n, p)
 
-    # Take all the elements in the first row and multiply it by the elements in the first column
-    # Row * Column
-    tmp = 0
-
-    ab = []
+    for i in range(n):
+        for j in range(p):
+            sum = 0
+            for k in range(m):
+                sum += a.data[i][k] * b.data[k][j]
+            C.data[i][j] = sum
 
     if __debug__:
-        print("a", a)
-        print("b", b)
+        print(f" out C: {C}")
 
-    for index, row in enumerate(a.data):
-        print("row index", index)
-        print("row", row)
-        r = []
-        for index, column in enumerate(b.data):
-            print("column index", index)
-            print("column", column)
-            r.append(row[0] * column)
-        ab.append(r)
-        print("ab", ab)
-
-    return Matrix(ab)
+    return C
