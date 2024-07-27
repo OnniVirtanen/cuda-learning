@@ -31,8 +31,21 @@ def matmul(a: Matrix, b: Matrix) -> Matrix:
     # Row * Column
     tmp = 0
 
-    for index, row in enumerate(a.data):
-        column = b.data[index][0]
-        tmp += row * column
+    ab = []
 
-    return Matrix([tmp])
+    if __debug__:
+        print("a", a)
+        print("b", b)
+
+    for index, row in enumerate(a.data):
+        print("row index", index)
+        print("row", row)
+        r = []
+        for index, column in enumerate(b.data):
+            print("column index", index)
+            print("column", column)
+            r.append(row[0] * column)
+        ab.append(r)
+        print("ab", ab)
+
+    return Matrix(ab)

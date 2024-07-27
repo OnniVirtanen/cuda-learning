@@ -2,7 +2,7 @@ import unittest
 from matmul import Matrix, matmul
 
 class TestMatrices(unittest.TestCase):
-    def test_multiply_matrices(self):
+    def est_multiply_matrices_1x1_output(self):
         a = Matrix([2,5,6])
         b = Matrix([[3], [4], [-5]])
 
@@ -10,7 +10,20 @@ class TestMatrices(unittest.TestCase):
 
         self.assertEqual(ab.data[0], -4)
 
-    def test_matrix_dimensions(self):
+    def test_multiply_matrices_3x3_output(self):
+        a = Matrix([2,5,6])
+        b = Matrix([[3], [4], [-5]])
+        expected = Matrix([[6, 15, 18], [8, 20, 24], [-10, -25, -30]])
+
+        ba = matmul(b, a)
+
+        print("output", ba)
+        print("expected", expected)
+
+        self.assertEqual(ba, expected)
+        
+
+    def est_matrix_dimensions(self):
         a = Matrix([2,5,6])
         b = Matrix([[3], [4], [-5]])
 
